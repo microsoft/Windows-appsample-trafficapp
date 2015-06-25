@@ -1,0 +1,205 @@
+﻿<!--
+Copyright (c) Microsoft Corporation.  All rights reserved.
+
+The MIT License (MIT)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+-->
+
+<Page
+    x:Class="TrafficApp.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:TrafficApp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:maps="using:Windows.UI.Xaml.Controls.Maps"
+    xmlns:loc="using:Location"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+
+        <!-- This Style adds the per-location buttons to the ListViewItem control template.
+             Using a control template is necessary here in order to enable the panel Visibility property 
+             to use TemplatedParent binding to the ListViewItem.IsSelected property. That way, the buttons
+             are shown or hidden depending on whether the item is selected. -->
+        <Style x:Key="LocationsViewItemStyle" TargetType="ListViewItem">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListViewItem">
+                        <Grid>
+                            <Border Margin="2" Padding="10" Background="SteelBlue" Opacity="0.9">
+                                <StackPanel>
+                                    <ContentPresenter x:Name="Presenter"/>
+                                    <StackPanel Orientation="Horizontal" Background="Transparent" Margin="-10,0,-9,-9" VerticalAlignment="Center" 
+                                        Visibility="{Binding IsSelected, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                        <AppBarButton Icon="Edit" ToolTipService.ToolTip="Edit location" Click="EditLocation_Click"/>
+                                        <AppBarButton Icon="Delete" ToolTipService.ToolTip="Delete location" Click="DeleteLocation_Click"/>
+                                        <AppBarButton Icon="Map" ToolTipService.ToolTip="Show route to location in Maps app" Click="ShowRouteButton_Click"/>
+                                        <AppBarToggleButton Icon="Favorite" ToolTipService.ToolTip="Monitor traffic to location" Click="TrackButton_Click"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+                            <Border BorderThickness="2" BorderBrush="Yellow" Visibility="{Binding IsSelected, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- This DataTemplate provides the UI for the location data that appears in the list. This UI appears 
+             where the ContentPresenter is shown in the ListViewItem control template above. This DataTemplate 
+             also declares the editor as an attached flyout, which appears near the item being edited. -->
+        <DataTemplate x:Key="LocationTemplate" x:DataType="loc:LocationData">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel>
+                    <TextBlock Text="{x:Bind Name, Mode=OneWay, TargetNullValue=''}" TextWrapping="Wrap"/>
+                    <TextBlock Text="{x:Bind Address, Mode=OneWay, TargetNullValue=''}" FontSize="9" TextWrapping="Wrap"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="15,0,0,4">
+                    <TextBlock Text="{x:Bind FormattedCurrentTravelDistance, Mode=OneWay, TargetNullValue=''}" Grid.Row="0" Grid.Column="1" FontSize="10" Margin="0,0,0,-2" HorizontalAlignment="Center"/>
+                    <TextBlock Text="{x:Bind FormattedCurrentTravelTime, Mode=OneWay, TargetNullValue=''}" Grid.Row="1" Grid.Column="1" FontSize="22" HorizontalAlignment="Center"/>
+                    <TextBlock Text="{x:Bind FormattedTimeStamp, Mode=OneWay, TargetNullValue=''}" Grid.Row="2" Grid.Column="1" FontSize="10" HorizontalAlignment="Center"/>
+                </StackPanel>
+
+                <FlyoutBase.AttachedFlyout>
+                    <Flyout Closed="Flyout_Closed" Placement="Bottom">
+                        <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- This flyout uses Binding instead of x:Bind because it relies on the code-behind setting the flyout's DataContext property.
+                                 This way, the editor is bound to a temporary copy of the location being edited, which enables the user to cancel any changes. -->
+
+                            <TextBlock Text="Name:" VerticalAlignment="Center" HorizontalAlignment="Right" FontSize="16" FontWeight="Bold"/>
+                            <TextBlock Text="Address:" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right" FontSize="16" FontWeight="Bold"/>
+                            <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" HorizontalAlignment="Left" Margin="3" Width="200" KeyUp="TextBox_KeyUp"/>
+                            <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="1">
+                                <TextBox Text="{Binding Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="3" Width="200" KeyUp="TextBox_KeyUp"/>
+                                <Button Click="EnableMapSelection" ToolTipService.ToolTip="Select new location on map">
+                                    <SymbolIcon Symbol="World"/>
+                                </Button>
+                            </StackPanel>
+                            <Button Content="Save" Click="FlyoutSave_Click" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" Margin="3"/>
+                        </Grid>
+                    </Flyout>
+                </FlyoutBase.AttachedFlyout>
+
+            </Grid>
+        </DataTemplate>
+
+        <!-- This DataTemplate provides the UI for the locations as they appear in the MapControl. -->
+        <DataTemplate x:Key="InputMapItemTemplate" x:DataType="loc:LocationData">
+            <Grid>
+
+                <!-- The geopoint icon is used for the current location. -->
+                <TextBlock Text="&#xE1D2;" FontFamily="Segoe MDL2 Assets" FontSize="40" 
+                    Visibility="{x:Bind IsCurrentLocation, Converter={StaticResource BooleanToVisibilityConverter}}"
+                    maps:MapControl.Location="{x:Bind Geopoint, Mode=OneWay}" 
+                    maps:MapControl.NormalizedAnchorPoint="{x:Bind NormalizedAnchorPoint, Mode=OneWay}"/>
+
+                <!-- The custom map pin image is used for saved locations. -->
+                <Image Source="{x:Bind ImageSource, Mode=OneWay}" Width="38" Height="60"
+                    Visibility="{x:Bind IsCurrentLocation, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=Reverse}"
+                    maps:MapControl.Location="{x:Bind Geopoint, Mode=OneWay}" 
+                    maps:MapControl.NormalizedAnchorPoint="{x:Bind NormalizedAnchorPoint, Mode=OneWay}"/>
+
+            </Grid>
+        </DataTemplate>
+
+    </Page.Resources>
+
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+		<!-- TODO Replace the placeholder string below with your own Bing Maps key from https://www.bingmapsportal.com -->
+        <maps:MapControl x:Name="InputMap" Grid.RowSpan="2" MapHolding="InputMap_MapHolding"
+            MapServiceToken="(insert your Bing Maps key here)">
+            <maps:MapItemsControl ItemsSource="{x:Bind MappedLocations}" ItemTemplate="{StaticResource InputMapItemTemplate}"/>
+        </maps:MapControl>
+
+        <StackPanel>
+
+            <Border x:Name="LocationDisabledMessage" Background="Red" VerticalAlignment="Top" Visibility="Collapsed">
+                <TextBlock Foreground="White" TextWrapping="Wrap" Margin="10">
+                    <Run Text="Location data is unavailable. Check your network connection or go to " />
+                    <Hyperlink NavigateUri="ms-settings:privacy-location" Foreground="White">
+                        <Run Text="Settings > Privacy > Location" />
+                    </Hyperlink>
+                    <Run Text=" to check your permissions."/>
+                </TextBlock>
+            </Border>
+
+            <Border x:Name="MapServicesDisabledMessage" Background="Red" VerticalAlignment="Top" Visibility="Collapsed">
+                <TextBlock Foreground="White" TextWrapping="Wrap" Margin="10">
+                    <Run Text="Route and address data is unavailable. Check your network connection."/>
+                    <Run FontWeight="Bold" Text="[Developers: did you add a Bing Maps key for the ServiceToken properties?]"/>
+                </TextBlock>                     
+            </Border>
+
+            <Border x:Name="ChangingLocationMessage" Background="Yellow" VerticalAlignment="Top" Visibility="Collapsed">
+                <TextBlock Foreground="SteelBlue" TextWrapping="Wrap" Margin="10" Text="Tap the map to reposition the selected location, or tap here to cancel the change." Tapped="TextBlock_Tapped"/>
+            </Border>
+
+        </StackPanel>
+
+        <!-- This ListView is customized using three external resources: 
+               * The LocationsViewItemStyle declares the app-bar buttons at the bottom of an item when it is selected.
+               * The LocationTemplate declares the UI for the location data that appears in each list item.
+               * The ListView itself implicitly uses an altered version of the default ListView control style.
+                 This style is declared in the App.xaml file, and enables the user to manipulate the area of
+                 the map shown below the list. For more info, see App.xaml. -->
+        <ListView x:Name="LocationsView" Grid.Row="1" SelectedItem="{x:Bind SelectedLocation, Mode=TwoWay}"
+            SelectionMode="Single" Margin="10,10,0,0" Width="277" HorizontalAlignment="Left"
+            ItemsSource="{x:Bind Locations}" ItemTemplate="{StaticResource LocationTemplate}" 
+            ItemContainerStyle="{StaticResource LocationsViewItemStyle}" />
+
+    </Grid>
+
+    <Page.BottomAppBar>
+        <CommandBar>
+            <AppBarButton x:Name="HideLocationsButton" Icon="ClosePane" Label="Hide locations list" Click="HideLocationsButton_Click" ToolTipService.ToolTip="Hide locations list"/>
+            <AppBarButton x:Name="AddCurrentLocationButton" Icon="Target" Label="Add current location" Click="AddCurrentLocation_Click" ToolTipService.ToolTip="Add current location to list"/>
+            <AppBarButton x:Name="AddNewLocationButton" Icon="MapPin" Label="Add new location" Click="AddNewLocation_Click" ToolTipService.ToolTip="Add new, blank location to list"/>
+        </CommandBar>
+    </Page.BottomAppBar>
+
+</Page>

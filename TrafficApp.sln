@@ -1,0 +1,92 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.22823.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrafficApp", "TrafficApp\TrafficApp.csproj", "{3398311C-8191-4131-9F78-86DBB1702E8F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{61E4DB46-9145-4587-BCAF-AE3DF9C62F7E} = {61E4DB46-9145-4587-BCAF-AE3DF9C62F7E}
+		{089D479E-9E0D-4296-9E04-12ECA7549461} = {089D479E-9E0D-4296-9E04-12ECA7549461}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocationHelper", "LocationHelper\LocationHelper.csproj", "{089D479E-9E0D-4296-9E04-12ECA7549461}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrafficMonitor", "TrafficMonitor\TrafficMonitor.csproj", "{61E4DB46-9145-4587-BCAF-AE3DF9C62F7E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{ECDA5021-9453-45DF-8029-626B67613731}"
+	ProjectSection(SolutionItems) = preProject
+		CONTRIBUTING.md = CONTRIBUTING.md
+		LICENSE = LICENSE
+		ProjectOverview.md = ProjectOverview.md
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Images", "Images", "{3C5E2570-8A42-4326-A8C8-ABDCC188E287}"
+	ProjectSection(SolutionItems) = preProject
+		Images\Icons.png = Images\Icons.png
+		Images\LiveVisualTree.png = Images\LiveVisualTree.png
+		Images\Route.png = Images\Route.png
+		Images\SelectedLocation.png = Images\SelectedLocation.png
+		Images\TrafficApp.png = Images\TrafficApp.png
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|ARM = Debug|ARM
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|ARM = Release|ARM
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3398311C-8191-4131-9F78-86DBB1702E8F}.Debug|ARM.ActiveCfg = Debug|ARM
+		{3398311C-8191-4131-9F78-86DBB1702E8F}.Debug|ARM.Build.0 = Debug|ARM
+		{3398311C-8191-4131-9F78-86DBB1702E8F}.Debug|ARM.Deploy.0 = Debug|ARM
+		{3398311C-8191-4131-9F78-86DBB1702E8F}.Debug|x64.ActiveCfg = Debug|x64
+		{3398311C-8191-4131-9F78-86DBB1702E8F}.Debug|x64.Build.0 = Debug|x64
+		{3398311C-8191-4131-9F78-86DBB1702E8F}.Debug|x64.Deploy.0 = Debug|x64
+		{3398311C-8191-4131-9F78-86DBB1702E8F}.Debug|x86.ActiveCfg = Debug|x86
+		{3398311C-8191-4131-9F78-86DBB1702E8F}.Debug|x86.Build.0 = Debug|x86
+		{3398311C-8191-4131-9F78-86DBB1702E8F}.Debug|x86.Deploy.0 = Debug|x86
+		{3398311C-8191-4131-9F78-86DBB1702E8F}.Release|ARM.ActiveCfg = Release|ARM
+		{3398311C-8191-4131-9F78-86DBB1702E8F}.Release|ARM.Build.0 = Release|ARM
+		{3398311C-8191-4131-9F78-86DBB1702E8F}.Release|ARM.Deploy.0 = Release|ARM
+		{3398311C-8191-4131-9F78-86DBB1702E8F}.Release|x64.ActiveCfg = Release|x64
+		{3398311C-8191-4131-9F78-86DBB1702E8F}.Release|x64.Build.0 = Release|x64
+		{3398311C-8191-4131-9F78-86DBB1702E8F}.Release|x64.Deploy.0 = Release|x64
+		{3398311C-8191-4131-9F78-86DBB1702E8F}.Release|x86.ActiveCfg = Release|x86
+		{3398311C-8191-4131-9F78-86DBB1702E8F}.Release|x86.Build.0 = Release|x86
+		{3398311C-8191-4131-9F78-86DBB1702E8F}.Release|x86.Deploy.0 = Release|x86
+		{089D479E-9E0D-4296-9E04-12ECA7549461}.Debug|ARM.ActiveCfg = Debug|ARM
+		{089D479E-9E0D-4296-9E04-12ECA7549461}.Debug|ARM.Build.0 = Debug|ARM
+		{089D479E-9E0D-4296-9E04-12ECA7549461}.Debug|x64.ActiveCfg = Debug|x64
+		{089D479E-9E0D-4296-9E04-12ECA7549461}.Debug|x64.Build.0 = Debug|x64
+		{089D479E-9E0D-4296-9E04-12ECA7549461}.Debug|x86.ActiveCfg = Debug|x86
+		{089D479E-9E0D-4296-9E04-12ECA7549461}.Debug|x86.Build.0 = Debug|x86
+		{089D479E-9E0D-4296-9E04-12ECA7549461}.Release|ARM.ActiveCfg = Release|ARM
+		{089D479E-9E0D-4296-9E04-12ECA7549461}.Release|ARM.Build.0 = Release|ARM
+		{089D479E-9E0D-4296-9E04-12ECA7549461}.Release|x64.ActiveCfg = Release|x64
+		{089D479E-9E0D-4296-9E04-12ECA7549461}.Release|x64.Build.0 = Release|x64
+		{089D479E-9E0D-4296-9E04-12ECA7549461}.Release|x86.ActiveCfg = Release|x86
+		{089D479E-9E0D-4296-9E04-12ECA7549461}.Release|x86.Build.0 = Release|x86
+		{61E4DB46-9145-4587-BCAF-AE3DF9C62F7E}.Debug|ARM.ActiveCfg = Debug|ARM
+		{61E4DB46-9145-4587-BCAF-AE3DF9C62F7E}.Debug|ARM.Build.0 = Debug|ARM
+		{61E4DB46-9145-4587-BCAF-AE3DF9C62F7E}.Debug|x64.ActiveCfg = Debug|x64
+		{61E4DB46-9145-4587-BCAF-AE3DF9C62F7E}.Debug|x64.Build.0 = Debug|x64
+		{61E4DB46-9145-4587-BCAF-AE3DF9C62F7E}.Debug|x86.ActiveCfg = Debug|x86
+		{61E4DB46-9145-4587-BCAF-AE3DF9C62F7E}.Debug|x86.Build.0 = Debug|x86
+		{61E4DB46-9145-4587-BCAF-AE3DF9C62F7E}.Release|ARM.ActiveCfg = Release|ARM
+		{61E4DB46-9145-4587-BCAF-AE3DF9C62F7E}.Release|ARM.Build.0 = Release|ARM
+		{61E4DB46-9145-4587-BCAF-AE3DF9C62F7E}.Release|x64.ActiveCfg = Release|x64
+		{61E4DB46-9145-4587-BCAF-AE3DF9C62F7E}.Release|x64.Build.0 = Release|x64
+		{61E4DB46-9145-4587-BCAF-AE3DF9C62F7E}.Release|x86.ActiveCfg = Release|x86
+		{61E4DB46-9145-4587-BCAF-AE3DF9C62F7E}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3C5E2570-8A42-4326-A8C8-ABDCC188E287} = {ECDA5021-9453-45DF-8029-626B67613731}
+	EndGlobalSection
+EndGlobal
