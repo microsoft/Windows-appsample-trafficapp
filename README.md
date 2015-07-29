@@ -19,7 +19,11 @@ Traffic App highlights the following APIs:
 
 ## Universal Windows Platform development
 
-This sample requires Visual Studio 2015 RC and the Windows Software Development Kit (SDK) for Windows 10. To get Windows 10 Insider Preview and the software development kits and tools, join the [Windows Insider Program](https://insider.windows.com/ "Become a Windows Insider").
+This sample requires Visual Studio 2015 and the Windows Software Development Kit (SDK) for Windows 10. 
+
+[Get a free copy of Visual Studio 2015 Community Edition with support for building Universal Windows apps](http://go.microsoft.com/fwlink/?LinkID=280676)
+
+Additionally, to be informed of the latest updates to Windows and the development tools, join the [Windows Insider Program](https://insider.windows.com/ "Become a Windows Insider").
 
 ## Running the sample
 
