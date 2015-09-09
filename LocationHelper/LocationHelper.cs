@@ -237,7 +237,13 @@ namespace Location
                     location.CurrentTravelTimeWithoutTraffic = routeResult.Route.EstimatedDuration.Minutes;
                 }
             }
-            else throw new Exception(routeFinderUnavailableMessage);
+            else if (routeResult.Status == MapRouteFinderStatus.UnknownError ||
+                routeResult.Status == MapRouteFinderStatus.InvalidCredentials ||
+                routeResult.Status == MapRouteFinderStatus.NetworkFailure ||
+                routeResult.Status == MapRouteFinderStatus.NotSupported)
+            {
+                throw new Exception(routeFinderUnavailableMessage);
+            }
         }
 
         /// <summary>

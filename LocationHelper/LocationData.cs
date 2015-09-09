@@ -27,9 +27,6 @@ using System.Runtime.Serialization;
 using Windows.Devices.Geolocation;
 using Windows.Foundation;
 using Windows.Services.Maps;
-using Windows.UI;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Media;
 
 namespace Location
 {
@@ -258,9 +255,9 @@ namespace Location
         }
 
         /// <summary>
-        /// Copies the property values of the current location into the specified location.
+        /// Copies the property values of the specified location into the current location.
         /// </summary>
-        /// <param name="location">The location to receive the copied values.</param>
+        /// <param name="location">The location to copy the values from.</param>
         public void Copy(LocationData location)
         {
             this.Name = location.Name;  
