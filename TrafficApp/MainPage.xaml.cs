@@ -28,6 +28,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using TrafficApp.Common;
 using Windows.ApplicationModel.Core;
 using Windows.Devices.Geolocation;
 using Windows.Networking.Connectivity;
@@ -118,25 +119,12 @@ namespace TrafficApp
             };
 
             // Update the travel times every 5 minutes.
-            this.StartTimer(5, async () => await this.UpdateLocationsTravelInfoAsync());
+            Helpers.StartTimer(5, async () => await this.UpdateLocationsTravelInfoAsync());
 
             // Update the freshness timestamp every minute;
-            this.StartTimer(1, () => { foreach (var location in this.Locations) location.RefreshFormattedTimestamp(); });
+            Helpers.StartTimer(1, () => { foreach (var location in this.Locations) location.RefreshFormattedTimestamp(); });
 
             LocationHelper.RegisterTrafficMonitor();
-        }
-
-        /// <summary>
-        /// Starts a timer to perform the specified action at the specified interval.
-        /// </summary>
-        /// <param name="intervalInMinutes">The interval.</param>
-        /// <param name="action">The action.</param>
-        private void StartTimer(int intervalInMinutes, Action action)
-        {
-            var timer = new DispatcherTimer();
-            timer.Interval = new TimeSpan(0, intervalInMinutes, 0);
-            timer.Tick += (s, e) => action();
-            timer.Start();
         }
 
         /// <summary>
@@ -184,7 +172,7 @@ namespace TrafficApp
         /// </summary>
         private async void Geolocator_StatusChanged(Geolocator sender, StatusChangedEventArgs args)
         {
-            await this.CallOnUiThreadAsync(async () =>
+            await Helpers.CallOnUiThreadAsync(async () =>
             {
                 switch (args.Status)
                 {
@@ -213,7 +201,7 @@ namespace TrafficApp
         /// <param name="sender"></param>
         private async void NetworkInformation_NetworkStatusChanged(object sender)
         {
-            await this.CallOnUiThreadAsync(async () =>
+            await Helpers.CallOnUiThreadAsync(async () =>
             {
                 var profile = NetworkInformation.GetInternetConnectionProfile();
                 bool isNetworkAvailable = profile != null;
@@ -221,12 +209,6 @@ namespace TrafficApp
                 if (isNetworkAvailable) await this.ResetViewAsync();
             });
         }
-
-        /// <summary>
-        /// Runs the specified handler on the UI thread at Normal priority. 
-        /// </summary>
-        private async Task CallOnUiThreadAsync(DispatchedHandler handler) => await
-            CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, handler);
 
         /// <summary>
         /// Updates the UI to account for the user's current position, if available, 
@@ -326,7 +308,7 @@ namespace TrafficApp
         /// Handles the button click event to hide or show the locations list, enabling 
         /// greater access to the map control with small windows. 
         /// </summary>
-        private void HideLocationsButton_Click(object sender, RoutedEventArgs e)
+        private void ListDisplayModeButton_Click(object sender, RoutedEventArgs e)
         {
             this.ToggleLocationsPaneVisibility();
         }
@@ -340,14 +322,14 @@ namespace TrafficApp
             if (this.LocationsView.Visibility == Visibility.Visible)
             {
                 this.LocationsView.Visibility = Visibility.Collapsed;
-                this.HideLocationsButton.Icon = new SymbolIcon { Symbol = Symbol.OpenPane };
-                ToolTipService.SetToolTip(this.HideLocationsButton, "Show locations list");
+                this.ListDisplayModeButton.Icon = new SymbolIcon { Symbol = Symbol.OpenPane };
+                ToolTipService.SetToolTip(this.ListDisplayModeButton, "Show locations list");
             }
             else
             {
                 this.LocationsView.Visibility = Visibility.Visible;
-                this.HideLocationsButton.Icon = new SymbolIcon { Symbol = Symbol.ClosePane };
-                ToolTipService.SetToolTip(this.HideLocationsButton, "Hide locations list");
+                this.ListDisplayModeButton.Icon = new SymbolIcon { Symbol = Symbol.ClosePane };
+                ToolTipService.SetToolTip(this.ListDisplayModeButton, "Hide locations list");
             }
         }
 
@@ -643,14 +625,14 @@ namespace TrafficApp
         /// Enters map selection mode, where the user can reposition the selected 
         /// location by tapping a new location on the map control. 
         /// </summary>
-        private void EnableMapSelection(object sender, RoutedEventArgs e)
+        private void EnterMapSelectionMode(object sender, RoutedEventArgs e)
         {
             this.isMapSelectionEnabled = true;
             this.InputMap.MapTapped += InputMap_MapTapped;
             this.InputMap.MapHolding -= InputMap_MapHolding;
             this.LocationsView.Visibility = Visibility.Collapsed;
-            this.ChangingLocationMessage.Visibility = Visibility.Visible;
-            this.HideLocationsButton.IsEnabled = false;
+            this.MapSelectionModeMessage.Visibility = Visibility.Visible;
+            this.ListDisplayModeButton.IsEnabled = false;
             this.AddCurrentLocationButton.IsEnabled = false;
             this.AddNewLocationButton.IsEnabled = false;
             Flyout.GetAttachedFlyout(this.GetTemplateRootForLocation(this.locationInEdit)).Hide();
@@ -665,8 +647,8 @@ namespace TrafficApp
             this.InputMap.MapTapped -= InputMap_MapTapped;
             this.InputMap.MapHolding += InputMap_MapHolding;
             this.LocationsView.Visibility = Visibility.Visible;
-            this.ChangingLocationMessage.Visibility = Visibility.Collapsed;
-            this.HideLocationsButton.IsEnabled = true;
+            this.MapSelectionModeMessage.Visibility = Visibility.Collapsed;
+            this.ListDisplayModeButton.IsEnabled = true;
             this.AddCurrentLocationButton.IsEnabled = true;
             this.AddNewLocationButton.IsEnabled = true;
         }

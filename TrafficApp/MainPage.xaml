@@ -110,7 +110,7 @@ THE SOFTWARE.
                             <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" HorizontalAlignment="Left" Margin="3" Width="200" KeyUp="TextBox_KeyUp"/>
                             <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="1">
                                 <TextBox Text="{Binding Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="3" Width="200" KeyUp="TextBox_KeyUp"/>
-                                <Button Click="EnableMapSelection" ToolTipService.ToolTip="Select new location on map">
+                                <Button Click="EnterMapSelectionMode" ToolTipService.ToolTip="Select new location on map">
                                     <SymbolIcon Symbol="World"/>
                                 </Button>
                             </StackPanel>
@@ -150,15 +150,17 @@ THE SOFTWARE.
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-		<!-- TODO Replace the placeholder string below with your own Bing Maps key from https://www.bingmapsportal.com -->
+        <!-- TODO Replace the placeholder string below with your own Bing Maps key from https://www.bingmapsportal.com -->
         <maps:MapControl x:Name="InputMap" Grid.RowSpan="2" MapHolding="InputMap_MapHolding"
             MapServiceToken="(insert your Bing Maps key here)">
-            <maps:MapItemsControl ItemsSource="{x:Bind MappedLocations}" ItemTemplate="{StaticResource InputMapItemTemplate}"/>
+            <maps:MapItemsControl ItemTemplate="{StaticResource InputMapItemTemplate}"
+                ItemsSource="{x:Bind MappedLocations}"/>
         </maps:MapControl>
 
         <StackPanel>
 
-            <Border x:Name="LocationDisabledMessage" Background="Red" VerticalAlignment="Top" Visibility="Collapsed">
+            <Border x:Name="LocationDisabledMessage" Background="Red" VerticalAlignment="Top" 
+                Visibility="Collapsed">
                 <TextBlock Foreground="White" TextWrapping="Wrap" Margin="10">
                     <Run Text="Location data is unavailable. Check your network connection or go to " />
                     <Hyperlink NavigateUri="ms-settings:privacy-location" Foreground="White">
@@ -168,15 +170,19 @@ THE SOFTWARE.
                 </TextBlock>
             </Border>
 
-            <Border x:Name="MapServicesDisabledMessage" Background="Red" VerticalAlignment="Top" Visibility="Collapsed">
+            <Border x:Name="MapServicesDisabledMessage" Background="Red" VerticalAlignment="Top" 
+                Visibility="Collapsed">
                 <TextBlock Foreground="White" TextWrapping="Wrap" Margin="10">
                     <Run Text="Route and address data is unavailable. Check your network connection."/>
                     <Run FontWeight="Bold" Text="[Developers: did you add a Bing Maps key for the ServiceToken properties?]"/>
                 </TextBlock>                     
             </Border>
 
-            <Border x:Name="ChangingLocationMessage" Background="Yellow" VerticalAlignment="Top" Visibility="Collapsed">
-                <TextBlock Foreground="SteelBlue" TextWrapping="Wrap" Margin="10" Text="Tap the map to reposition the selected location, or tap here to cancel the change." Tapped="TextBlock_Tapped"/>
+            <Border x:Name="MapSelectionModeMessage" Background="Yellow" VerticalAlignment="Top" 
+                Visibility="Collapsed">
+                <TextBlock Foreground="SteelBlue" TextWrapping="Wrap" Margin="10" 
+                    Text="Tap the map to reposition the selected location, or tap here to cancel the change." 
+                    Tapped="TextBlock_Tapped"/>
             </Border>
 
         </StackPanel>
@@ -187,18 +193,32 @@ THE SOFTWARE.
                * The ListView itself implicitly uses an altered version of the default ListView control style.
                  This style is declared in the App.xaml file, and enables the user to manipulate the area of
                  the map shown below the list. For more info, see App.xaml. -->
-        <ListView x:Name="LocationsView" Grid.Row="1" SelectedItem="{x:Bind SelectedLocation, Mode=TwoWay}"
-            SelectionMode="Single" Margin="10,10,0,0" Width="277" HorizontalAlignment="Left"
-            ItemsSource="{x:Bind Locations}" ItemTemplate="{StaticResource LocationTemplate}" 
+        <ListView x:Name="LocationsView" Grid.Row="1" Margin="10,10,0,0" Width="277" HorizontalAlignment="Left"
+            SelectionMode="Single" 
+            SelectedItem="{x:Bind SelectedLocation, Mode=TwoWay}"
+            ItemsSource="{x:Bind Locations}" 
+            ItemTemplate="{StaticResource LocationTemplate}" 
             ItemContainerStyle="{StaticResource LocationsViewItemStyle}" />
 
     </Grid>
 
     <Page.BottomAppBar>
         <CommandBar>
-            <AppBarButton x:Name="HideLocationsButton" Icon="ClosePane" Label="Hide locations list" Click="HideLocationsButton_Click" ToolTipService.ToolTip="Hide locations list"/>
-            <AppBarButton x:Name="AddCurrentLocationButton" Icon="Target" Label="Add current location" Click="AddCurrentLocation_Click" ToolTipService.ToolTip="Add current location to list"/>
-            <AppBarButton x:Name="AddNewLocationButton" Icon="MapPin" Label="Add new location" Click="AddNewLocation_Click" ToolTipService.ToolTip="Add new, blank location to list"/>
+            <AppBarButton x:Name="ListDisplayModeButton" 
+                Icon="ClosePane" 
+                Label="Hide locations list" 
+                ToolTipService.ToolTip="Hide locations list"
+                Click="ListDisplayModeButton_Click" />
+            <AppBarButton x:Name="AddCurrentLocationButton" 
+                Icon="Target" 
+                Label="Add current location" 
+                ToolTipService.ToolTip="Add current location to list"
+                Click="AddCurrentLocation_Click"/>
+            <AppBarButton x:Name="AddNewLocationButton" 
+                Icon="MapPin" 
+                Label="Add new location" 
+                ToolTipService.ToolTip="Add new, blank location to list"
+                Click="AddNewLocation_Click" />
         </CommandBar>
     </Page.BottomAppBar>
 
