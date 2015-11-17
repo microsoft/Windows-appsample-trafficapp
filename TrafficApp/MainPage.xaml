@@ -154,13 +154,13 @@ THE SOFTWARE.
         <maps:MapControl x:Name="InputMap" Grid.RowSpan="2" MapHolding="InputMap_MapHolding"
             MapServiceToken="(insert your Bing Maps key here)">
             <maps:MapItemsControl ItemTemplate="{StaticResource InputMapItemTemplate}"
-                ItemsSource="{x:Bind MappedLocations}"/>
+                ItemsSource="{x:Bind ViewModel.MappedLocations}"/>
         </maps:MapControl>
 
         <StackPanel>
 
             <Border x:Name="LocationDisabledMessage" Background="Red" VerticalAlignment="Top" 
-                Visibility="Collapsed">
+                Visibility="{x:Bind ViewModel.LocationDisabledMessageVisibility, Mode=OneWay}">
                 <TextBlock Foreground="White" TextWrapping="Wrap" Margin="10">
                     <Run Text="Location data is unavailable. Check your network connection or go to " />
                     <Hyperlink NavigateUri="ms-settings:privacy-location" Foreground="White">
@@ -171,7 +171,7 @@ THE SOFTWARE.
             </Border>
 
             <Border x:Name="MapServicesDisabledMessage" Background="Red" VerticalAlignment="Top" 
-                Visibility="Collapsed">
+                Visibility="{x:Bind ViewModel.MapServicesDisabledMessageVisibility, Mode=OneWay}">
                 <TextBlock Foreground="White" TextWrapping="Wrap" Margin="10">
                     <Run Text="Route and address data is unavailable. Check your network connection."/>
                     <Run FontWeight="Bold" Text="[Developers: did you add a Bing Maps key for the ServiceToken properties?]"/>
@@ -179,10 +179,10 @@ THE SOFTWARE.
             </Border>
 
             <Border x:Name="MapSelectionModeMessage" Background="Yellow" VerticalAlignment="Top" 
-                Visibility="Collapsed">
+                Visibility="{x:Bind ViewModel.MapSelectionModeMessageVisibility, Mode=OneWay}">
                 <TextBlock Foreground="SteelBlue" TextWrapping="Wrap" Margin="10" 
                     Text="Tap the map to reposition the selected location, or tap here to cancel the change." 
-                    Tapped="TextBlock_Tapped"/>
+                    Tapped="{x:Bind ViewModel.LeaveMapSelectionMode}"/>
             </Border>
 
         </StackPanel>
@@ -194,9 +194,10 @@ THE SOFTWARE.
                  This style is declared in the App.xaml file, and enables the user to manipulate the area of
                  the map shown below the list. For more info, see App.xaml. -->
         <ListView x:Name="LocationsView" Grid.Row="1" Margin="10,10,0,0" Width="277" HorizontalAlignment="Left"
+            Visibility="{x:Bind ViewModel.LocationsViewVisibility, Mode=OneWay}"
             SelectionMode="Single" 
-            SelectedItem="{x:Bind SelectedLocation, Mode=TwoWay}"
-            ItemsSource="{x:Bind Locations}" 
+            SelectedItem="{x:Bind ViewModel.SelectedItem, Mode=TwoWay}"
+            ItemsSource="{x:Bind ViewModel.Locations}" 
             ItemTemplate="{StaticResource LocationTemplate}" 
             ItemContainerStyle="{StaticResource LocationsViewItemStyle}" />
 
@@ -205,20 +206,22 @@ THE SOFTWARE.
     <Page.BottomAppBar>
         <CommandBar>
             <AppBarButton x:Name="ListDisplayModeButton" 
-                Icon="ClosePane" 
-                Label="Hide locations list" 
-                ToolTipService.ToolTip="Hide locations list"
-                Click="ListDisplayModeButton_Click" />
+                Icon="{x:Bind ViewModel.ListDisplayModeButtonIcon, Mode=OneWay}" 
+                Label="{x:Bind ViewModel.ListDisplayModeButtonLabel, Mode=OneWay}" 
+                ToolTipService.ToolTip="{x:Bind ViewModel.ListDisplayModeButtonLabel, Mode=OneWay}"
+                Click="{x:Bind ViewModel.ToggleListDisplayMode}"
+                IsEnabled="{x:Bind ViewModel.IsListDisplayModeButtonEnabled, Mode=OneWay}" />
             <AppBarButton x:Name="AddCurrentLocationButton" 
                 Icon="Target" 
                 Label="Add current location" 
                 ToolTipService.ToolTip="Add current location to list"
-                Click="AddCurrentLocation_Click"/>
+                Click="{x:Bind ViewModel.AddCurrentLocationAsync}"
+                IsEnabled="{x:Bind ViewModel.IsAddCurrentLocationButtonEnabled, Mode=OneWay}" />
             <AppBarButton x:Name="AddNewLocationButton" 
                 Icon="MapPin" 
                 Label="Add new location" 
                 ToolTipService.ToolTip="Add new, blank location to list"
-                Click="AddNewLocation_Click" />
+                Click="{x:Bind ViewModel.AddNewLocation}" />
         </CommandBar>
     </Page.BottomAppBar>
 
