@@ -69,9 +69,6 @@ namespace Location
                      }
                  }).ToList();
 
-            await Task.WhenAll(locations.Select(async location =>
-                await LocationHelper.TryUpdateMissingLocationInfoAsync(location, null)));
-
             return locations;
         }
 

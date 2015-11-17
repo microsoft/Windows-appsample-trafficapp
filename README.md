@@ -1,4 +1,6 @@
-﻿# Traffic App sample
+﻿# Traffic App sample - MVVM version
+
+**Note:** This branch of the repo contains the Model-View-ViewModel (MVVM) version of the app. For more info, see the [MVVM conversion notes](MVVM.md). For the original, code-behind version, see the [master branch](../..). (The rest of this readme is identical to the one in the master branch.)
 
 **Traffic App** is a sample Universal Windows Platform (UWP) app for commuters to track drive times to various locations. The user adds frequently-visited destinations using app-bar buttons or by tapping and holding on the map. Traffic App then provides a quick view into how long it will take to drive to each place from the user’s current location, following the fastest route. The user can also flag a particular destination and a background task will periodically monitor traffic to that location, alerting the user when traffic is adding ten minutes or more to the travel time. 
 
@@ -10,12 +12,12 @@ For a description of the goals and challenges of this project, see the [project 
 
 Traffic App highlights the following APIs:
 
-* MapControl and MapItemsControl (Windows.UI.Xaml.Controls.Maps)
-* Geolocator (Windows.Devices.Geolocation)
-* MapLocationFinder and MapRouteFinder (Windows.Services.Maps)
-* Background tasks (Windows.ApplicationModel.Background)
-* Toast notifications (Windows.UI.Notifications)
-* Local storage and serialization (Windows.Storage)
+* [MapControl](https://msdn.microsoft.com/library/windows/apps/xaml/windows.ui.xaml.controls.maps.mapcontrol.aspx) and [MapItemsControl](https://msdn.microsoft.com/library/windows/apps/windows.ui.xaml.controls.maps.mapitemscontrol.aspx) ([Windows.UI.Xaml.Controls.Maps](https://msdn.microsoft.com/library/windows/apps/windows.ui.xaml.controls.maps.aspx))
+* [Geolocator](https://msdn.microsoft.com/library/windows/apps/windows.devices.geolocation.geolocator.aspx) ([Windows.Devices.Geolocation](https://msdn.microsoft.com/library/windows/apps/br229921.aspx))
+* [MapLocationFinder](https://msdn.microsoft.com/library/windows/apps/windows.services.maps.maplocationfinder.aspx) and [MapRouteFinder](https://msdn.microsoft.com/library/windows/apps/windows.services.maps.maproutefinder.aspx) ([Windows.Services.Maps](https://msdn.microsoft.com/library/windows/apps/windows.services.maps.aspx))
+* Background tasks ([Windows.ApplicationModel.Background](https://msdn.microsoft.com/library/windows/apps/windows.applicationmodel.background.aspx))
+* Toast notifications ([Windows.UI.Notifications](https://msdn.microsoft.com/library/windows/apps/windows.ui.notifications.aspx))
+* Local storage and serialization ([Windows.Storage](https://msdn.microsoft.com/library/windows/apps/windows.storage.aspx))
 
 ## Universal Windows Platform development
 
@@ -39,18 +41,18 @@ By default, the app generates four sample locations at random positions around y
 
 If you’re just interested in code snippets for certain API and don’t want to browse or run the full sample, check out the following files for examples of some highlighted features:
 
-* LocationHelper.cs
-	- Getting the user’s current location using the Geolocator class.
-	- Getting the route, travel time, and distance to a location using the MapRouteFinder class. 
-	- Getting the address for a particular position using the MapLocationFinder class.
+* [LocationHelper.cs](LocationHelper/LocationHelper.cs#L38)
+	- Getting the user’s current location using the [Geolocator](https://msdn.microsoft.com/library/windows/apps/windows.devices.geolocation.geolocator.aspx) class.
+	- Getting the route, travel time, and distance to a location using the [MapRouteFinder](https://msdn.microsoft.com/library/windows/apps/windows.services.maps.maproutefinder.aspx) class. 
+	- Getting the address for a particular position using the [MapLocationFinder](https://msdn.microsoft.com/library/windows/apps/windows.services.maps.maplocationfinder.aspx) class.
 	- Displaying a toast notification.
-* MainPage.xaml and MainPage.xaml.cs: 
-	- Using MapControl and MapItemsControl, handling user gestures on the map. 
-	- Displaying locations in the map and list controls using item templates and data binding (including x:Bind).
-	- Using a Flyout for location editing, handling the editing experience and edit cancellation.
-	- Displaying commands in an app bar.
-* TrafficMonitor.cs:
-	- Running background tasks on a specified interval.
-* LocationDataStore.cs
+* [MainPage.xaml](TrafficApp/MainPage.xaml#L25) and [MainPage.xaml.cs](TrafficApp/MainPage.xaml.cs#L49): 
+	- Using [MapControl](https://msdn.microsoft.com/library/windows/apps/xaml/windows.ui.xaml.controls.maps.mapcontrol.aspx) and [MapItemsControl](https://msdn.microsoft.com/library/windows/apps/windows.ui.xaml.controls.maps.mapitemscontrol.aspx), handling user gestures on the map. 
+	- Displaying locations in the map and list controls using item templates and data binding (including [x:Bind](https://msdn.microsoft.com/library/windows/apps/xaml/mt204783.aspx)).
+	- Using a [Flyout](https://msdn.microsoft.com/library/windows/apps/windows.ui.xaml.controls.flyout.aspx) for location editing, handling the editing experience and edit cancellation.
+	- Displaying commands in a [CommandBar](https://msdn.microsoft.com/library/windows/apps/windows.ui.xaml.controls.commandbar.aspx).
+* [TrafficMonitor.cs](TrafficMonitor/TrafficMonitor.cs#L34):
+	- Running [background tasks](https://msdn.microsoft.com/library/windows/apps/mt299103.aspx) on a specified interval.
+* [LocationDataStore.cs](LocationHelper/LocationDataStore.cs#L40)
 	- Generating sample locations at random positions.
 	- Serializing data and reading/writing it to roaming storage.
