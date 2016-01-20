@@ -86,7 +86,7 @@ Data logic is often trivial to separate from other logic, so it was useful to do
 
 Data binding is the main way to achieve clean separation between UI and data logic because the only connection between the two is declared in XAML through Binding or x:Bind markup. This markup directs the built-in binding engine to transfer values between data objects and UI controls, usually in response to property change events. The required UI logic is provided by the system, so it automatically stays separate from other logic. 
 
-You might call this approach a "Model-View" architecture, where the model is the data and the view is the XAML that binds to the data, plus everything in the code-behind file. This is approach is common in XAML apps, and although it isn't MVVM by itself, it is the first step on the path toward MVVM.
+You might call this approach a "Model-View" architecture, where the model is the data and the view is the XAML that binds to the data, plus everything in the code-behind file. This approach is common in XAML apps, and although it isn't MVVM by itself, it is the first step on the path toward MVVM.
 
 Unfortunately, not every UI control is easily manipulated solely through bindings. Some UI features are available only through methods, which cannot be binding targets. This is why both versions of Traffic App still have some logic in the code-behind file that manipulates the UI directly. This UI logic is tightly coupled to the XAML, so it is a proper part of the view, making it appropriate for the code-behind file. The MVVM version of the app, however, invokes this code only in response to events raised by the separated app logic.  
 
@@ -100,7 +100,7 @@ The term "view model" is really just a way of saying that the supplemental app d
 
 ### Separation
 
-Putting different kinds of data and logic in different files isn't enough to properly separate them, and there are often plenty of explicit connections. The important kind of separation is to ensure that there are no references to higher levels from any lower levels. In other words, all dependencies are one-way dependencies flowing down from the view, which is at the highest level. The view can explicitly reference the view model, and the view model can explicitly reference the view. But all communication in the other direction is through events, typically property-changed events monitored by the binding infrastructure. 
+Putting different kinds of data and logic in different files isn't enough to properly separate them, and there are often plenty of explicit connections. The important kind of separation is to ensure that there are no references to higher levels from any lower levels. In other words, all dependencies are one-way dependencies flowing down from the view, which is at the highest level. The view can explicitly reference the view model, and the view model can explicitly reference the model, which is at the lowest level. But all communication in the other direction is through events, typically property-changed events monitored by the binding infrastructure. 
 
 Event publishers don't need to have any dependencies on event subscribers, so communication by events is indirect enough to achieve meaningful separation. As long as the same events are raised for the same reasons, the code that raises the events can change arbitrarily without affecting the UI layer. Similarly, as long as the events are handled to generate appropriate experiences, the UI can change without requiring changes in the view model or other models. 
 
@@ -117,4 +117,4 @@ To summarize, in the MVVM version of Traffic App:
   * The view binds many UI properties directly to view-model and model properties, and binds many UI events directly to view-model methods. 
   * When a UI property cannot bind directly to a given view-model property, the view-model provides a wrapper property that exposes the app state in whatever format or data type the UI requires.
   * When a UI event cannot bind directly to a given view-model method or the method needs some data from the event, the view uses a code-behind event handler to call the view-model method, passing it any relevant data extracted from the event args. 
-  * When a UI control exposes some features through methods only, the view calls those methods from code-behind in response to any relevant view-model PropertyChanged events.
+  * When a UI control exposes some features through methods only, the view calls those methods from code-behind in response to any relevant view-model events.
