@@ -137,11 +137,11 @@ namespace TrafficApp
 
             if (e.NavigationMode == NavigationMode.New)
             {
-                // Load sample location data.
-                foreach (var location in await LocationDataStore.GetSampleLocationDataAsync()) this.Locations.Add(location);
-
-                // Alternative: Load location data from storage.
-                //foreach (var item in await LocationDataStore.GetLocationDataAsync()) this.Locations.Add(item);
+                // Load location data from storage if it exists;
+                // otherwise, load sample location data.
+                var locations = await LocationDataStore.GetLocationDataAsync();
+                if (locations.Count == 0) locations = await LocationDataStore.GetSampleLocationDataAsync();
+                foreach (var location in locations) this.Locations.Add(location);
 
                 // Start handling Geolocator and network status changes after loading the data 
                 // so that the view doesn't get refreshed before there is something to show.
