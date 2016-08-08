@@ -69,6 +69,10 @@ namespace Location
                      }
                  }).ToList();
 
+            // Resolve addresses for the random positions in the sample data. 
+            var withoutAwait = Task.WhenAll(locations.Select(async location =>
+                await LocationHelper.TryUpdateMissingLocationInfoAsync(location, null)));
+
             return locations;
         }
 

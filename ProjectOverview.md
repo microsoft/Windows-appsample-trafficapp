@@ -21,19 +21,21 @@ MapRouteFinderResult routeResult = await
 	    MapRouteOptimization.TimeWithTraffic, MapRouteRestrictions.None);
 ```
 
-## Code behind, leaning toward MVVM
+## Code behind, converted to MVVM
 
-We decided to start by creating a conventional code-behind app because the UI was so simple and it was a prototype anyway. We also reasoned that we would eventually convert to MVVM, and we would document the conversion. This kind of conversion experience is useful to understand exactly when and why MVVM becomes more useful than a code-behind architecture.
+We decided to start by creating a conventional code-behind app because the UI was so simple and it was a prototype anyway. We also reasoned that we would then convert it to a Model-View-ViewModel (MVVM) architecture, and we would document the conversion. This kind of conversion experience is useful to understand exactly when and why MVVM becomes more useful than a code-behind architecture.
 
-The current version is still a code-behind one, but it has reached the point where additional growth will increase the complexity unnecessarily, making it ever harder to test, and increasingly brittle with unexpected side effects. So our goal for the next version is to switch to MVVM. We have tried to keep the current version well organized to demonstrate a fair conversion, and of course the current factoring of functionality (with the LocationHelper classes) is a good step toward a clean separation of concerns already. 
+The code-behind version had reached the point where additional growth would increase the complexity unnecessarily, making it ever harder to test, and increasingly brittle with unexpected side effects. So the conversion to MVVM made practical sense. We had tried to keep the code-behind version well organized to demonstrate a fair conversion, and of course the factoring of functionality in the code-behind version (with the LocationHelper classes) was already a good step toward a clean separation of concerns. So the MVVM conversion was fairly straightforward. 
+
+For the original, code-behind version, see the [master branch](../..). For the MVVM version, see the [MVVM branch](../../tree/MVVM). For more info on the differences between the two versions, see the [MVVM conversion notes](../../tree/MVVM/MVVM.md). 
 
 ## Data binding
 
-The LocationData class is effectively a view model already because it provides a binding source and implements INotifyPropertyChanged (indirectly, by inheriting the BindableBase helper class). 
+Even in the original code-behind version, the LocationData class is effectively a view model because it provides a binding source and implements INotifyPropertyChanged (indirectly, by inheriting the BindableBase helper class). 
 
-Of course, all the code-behind in the app keeps it from being a true MVVM example, but the key to MVVM is the separation of concerns enabled by data binding. The value of MVVM is more a matter of how separated; fully decoupled code modules are independently testable and more easily replaceable. However, even partial separation is a useful step in the right direction, and even very basic data binding gives you that.
+Of course, all the code-behind in the original version keeps it from being a true MVVM example, but the key to MVVM is the separation of concerns enabled by data binding. The value of MVVM is more a matter of how separated; fully decoupled code modules are independently testable and more easily replaceable. However, even partial separation is a useful step in the right direction, and even very basic data binding gives you that.
 
-The Traffic app uses binding in several places. First, the LocationTemplate and InputMapItemTemplate make use of the new x:Bind markup extension to connect UI elements to properties of the LocationData class. The app also uses the existing Binding markup extension in the LocationsViewItemStyle to bind the ListViewItem.IsSelected property to a Visibility property in the control template. This binding enables the selected item in the locations ListView to display a row of buttons.
+Both versions of the traffic app use binding in several places. First, the LocationTemplate and InputMapItemTemplate make use of the new x:Bind markup extension to connect UI elements to properties of the LocationData class. The app also uses the existing Binding markup extension in the LocationsViewItemStyle to bind the ListViewItem.IsSelected property to a Visibility property in the control template. This binding enables the selected item in the locations ListView to display a row of buttons.
 
 ![The selected location in the locations list](/Images/SelectedLocation.png)
 

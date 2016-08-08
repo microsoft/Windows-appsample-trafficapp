@@ -59,12 +59,11 @@ namespace TrafficApp
 
         private async void InitializeData()
         {
-            // Load sample location data.
-            // Alternative: Load location data from storage using LocationDataStore.GetLocationDataAsync.
-            var locations = await LocationDataStore.GetSampleLocationDataAsync();
-
-            // Populate the Locations collection. 
-            await Helpers.CallOnUiThreadAsync(() => { foreach (var location in locations) Locations.Add(location); });
+            // Load location data from storage if it exists;
+            // otherwise, load sample location data.
+            var locations = await LocationDataStore.GetLocationDataAsync();
+            if (locations.Count == 0) locations = await LocationDataStore.GetSampleLocationDataAsync();
+            foreach (var location in locations) this.Locations.Add(location);
 
             // Raise the MapViewReset event to refresh the bounds of the map control. 
             ResetMapView();
@@ -73,10 +72,6 @@ namespace TrafficApp
             // These event handlers are added after loading the data so that the view doesn't get refreshed 
             // before there is something to show.
             HandleStatusChangedEvents();
-
-            // Resolve addresses for the random positions in the sample data. 
-            await Task.WhenAll(locations.Select(async location => await Helpers.CallOnUiThreadAsync(async () =>
-                await LocationHelper.TryUpdateMissingLocationInfoAsync(location, null))));
         }
 
         private void HandleStatusChangedEvents()
