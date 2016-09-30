@@ -1,4 +1,8 @@
-﻿# Traffic App sample - traditional version
+﻿<!---
+  category: MapsAndLocation Data LaunchingAndBackgroundTasks TilesToastAndNotifications FilesFoldersAndLibraries
+-->
+
+# Traffic App sample
 
 **Note:** This branch of the repo contains the original version of the sample, which uses a traditional "code-behind" architecture. For the Model-View-ViewModel (MVVM) version, see the [MVVM branch](../../tree/MVVM). 
 
