@@ -4,11 +4,11 @@
 
 # Traffic App sample
 
-**Note:** This branch of the repo contains the original version of the sample, which uses a traditional "code-behind" architecture. For the Model-View-ViewModel (MVVM) version, see the [MVVM branch](../../tree/MVVM). 
-
 **Traffic App** is a sample Universal Windows Platform (UWP) app for commuters to track drive times to various locations. The user adds frequently-visited destinations using app-bar buttons or by tapping and holding on the map. Traffic App then provides a quick view into how long it will take to drive to each place from the user’s current location, following the fastest route. The user can also flag a particular destination and a background task will periodically monitor traffic to that location, alerting the user when traffic is adding ten minutes or more to the travel time. 
 
 For a description of the goals and challenges of this project, see the [project overview](ProjectOverview.md).
+
+**Note:** This branch of the repo contains the original version of the sample, which uses a traditional "code-behind" architecture. For the Model-View-ViewModel (MVVM) version, see the [MVVM branch](../../tree/MVVM). 
 
 ![Traffic app screenshot](/Images/TrafficApp.png)
 
