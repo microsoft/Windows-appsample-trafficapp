@@ -10,6 +10,8 @@ it will take to drive to each place from the user’s current location, followin
 also flag a particular destination and a background task will periodically monitor traffic to that location, 
 alerting the user when traffic is adding ten minutes or more to the travel time. 
 
+This sample runs on the Universal Windows Platform (UWP). 
+
 For a description of the goals and challenges of this project, see the [project overview](ProjectOverview.md).
 
 **Note:** This branch of the repo contains the original version of the sample, which uses a traditional "code-behind" 
