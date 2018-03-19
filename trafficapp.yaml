@@ -2,7 +2,8 @@
 sample:
 - name: Traffic app sample
   description: A mini-app for commuters to track drive times to various locations.
-  generateZip: false
+  image: Images/TrafficApp.png
+  generateZip: true
   author: karler
   languages:
   - csharp
