@@ -10,3 +10,4 @@ sample:
   - xaml
   technologies:
   - windows
+  vssolution: TrafficApp.sln
