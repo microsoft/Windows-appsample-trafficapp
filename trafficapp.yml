@@ -7,7 +7,6 @@ sample:
   author: karler
   languages:
   - csharp
-  - xaml
   technologies:
   - windows
   vssolution: TrafficApp.sln
