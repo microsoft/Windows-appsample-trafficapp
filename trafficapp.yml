@@ -4,7 +4,7 @@ sample:
   description: A mini-app for commuters to track drive times to various locations.
   image: Images/TrafficApp.png
   generateZip: true
-  author: karler
+  author: KarlErickson
   languages:
   - csharp
   technologies:
