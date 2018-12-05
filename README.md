@@ -1,8 +1,4 @@
-﻿<!---
-  category: MapsAndLocation Data LaunchingAndBackgroundTasks TilesToastAndNotifications FilesFoldersAndLibraries
--->
-
----
+﻿---
 topic: sample
 languages:
 - csharp
