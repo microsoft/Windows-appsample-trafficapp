@@ -2,6 +2,17 @@
   category: MapsAndLocation Data LaunchingAndBackgroundTasks TilesToastAndNotifications FilesFoldersAndLibraries
 -->
 
+---
+topic: sample
+languages:
+- csharp
+products:
+- windows
+- uwp
+statusNotificationTargets:
+- codefirst
+---
+
 # Traffic App sample
 
 A mini-app for commuters to track drive times to various locations. The user adds frequently-visited destinations 
