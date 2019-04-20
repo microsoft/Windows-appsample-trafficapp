@@ -15,6 +15,8 @@ statusNotificationTargets:
 
 # Traffic App sample
 
+> Note - This sample is targeted and tested for Windows 10, version 1903 (10.0; Build 18362), and Visual Studio 2019. If you prefer, you can use project properties to retarget the project(s) to Windows 10, version 1809 (10.0; Build 17763), and/or open the sample with Visual Studio 2017.
+
 A mini-app for commuters to track drive times to various locations. The user adds frequently-visited destinations 
 using app-bar buttons or by tapping and holding on the map. Traffic App then provides a quick view into how long 
 it will take to drive to each place from the user's current location, following the fastest route. The user can 
