@@ -83,3 +83,5 @@ If you're just interested in code snippets for certain API and don't want to bro
 * [LocationDataStore.cs](LocationHelper/LocationDataStore.cs#L40)
 	- Generating sample locations at random positions.
 	- Serializing data and reading/writing it to roaming storage.
+
+
