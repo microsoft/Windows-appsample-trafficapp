@@ -7,6 +7,7 @@ products:
 - windows-uwp
 statusNotificationTargets:
 - codefirst@microsoft.com
+description: "A mini-app for commuters to track drive times to various locations."
 ---
 
 <!---
